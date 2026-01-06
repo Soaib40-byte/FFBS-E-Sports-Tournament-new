@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Pro App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div id="login-screen" class="container">
+        <div class="glass-card login-box">
+            <i class="fab fa-telegram-plane"></i>
+            <h1>Tournament App</h1>
+            <p>লগিন করতে নিচের বাটনে ক্লিক করুন</p>
+            <button class="btn-telegram" onclick="login()">
+                <i class="fab fa-telegram"></i> Login with Telegram
+            </button>
+        </div>
+    </div>
+
+    <div id="app-ui" class="hidden">
+        
+        <header class="top-bar">
+            <span id="u-name-top">Player</span>
+            <div class="balance-badge">৳ <span id="top-balance">10</span></div>
+        </header>
+
+        <section id="home-sec" class="container sec">
+            <div class="game-card ff" onclick="showFFSection()">
+                <div class="game-overlay">
+                    <h2>FREE FIRE MAX</h2>
+                    <p>১০টি ম্যাচ লাইভ আছে</p>
+                </div>
+            </div>
+            <div class="game-card bs disabled">
+                <div class="game-overlay">
+                    <h2>BLOOD STRIKE</h2>
+                    <p>Coming Soon</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ff-sec" class="container sec hidden">
+            <div class="section-header">
+                <i class="fas fa-arrow-left" onclick="showHome()"></i>
+                <h3>BR Solo Matches</h3>
+            </div>
+
+            <div class="match-card">
+                <div class="match-info-box" onclick="showRules()">
+                    <div id="timer" class="timer">00:00:00</div>
+                    <h4>BR SOLO - CLASSIC MAP</h4>
+                    <div class="match-grid">
+                        <span><i class="fas fa-money-bill-wave"></i> এন্ট্রি: ১৳</span>
+                        <span><i class="fas fa-trophy"></i> প্রাইজ: ৪০৳</span>
+                    </div>
+                </div>
+                <button id="join-btn" class="btn-join" onclick="handleJoin()">Join Match</button>
+            </div>
+        </section>
+
+        <section id="profile-sec" class="container sec hidden">
+            <div class="profile-card glass-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Avatar">
+                <h2 id="full-name">User Name</h2>
+                <p id="tg-username">@telegram_user</p>
+            </div>
+            <div class="stats-container">
+                <div class="stat-item"><span>ম্যাচ খেলেছে</span><b id="m-played">0</b></div>
+                <div class="stat-item"><span>মোট জয়</span><b>৳ 0</b></div>
+            </div>
+        </section>
+
+        <nav class="bottom-nav">
+            <div class="nav-item active" id="n-home" onclick="showHome()"><i class="fas fa-home"></i><span>Home</span></div>
+            <div class="nav-item" id="n-wallet" onclick="showWallet()"><i class="fas fa-wallet"></i><span>Wallet</span></div>
+            <div class="nav-item" id="n-profile" onclick="showProfile()"><i class="fas fa-user"></i><span>Profile</span></div>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

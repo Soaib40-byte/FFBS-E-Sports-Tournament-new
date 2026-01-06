@@ -1,0 +1,98 @@
+:root {
+    --primary: #ff4757;
+    --blue: #0088cc;
+    --bg: #0b132b;
+    --glass: rgba(255, 255, 255, 0.08);
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #050505;
+    color: white;
+    overflow-x: hidden;
+}
+
+.container { padding: 20px; }
+.hidden { display: none !important; }
+
+/* Glass Card Effect */
+.glass-card {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+}
+
+/* Login Screen */
+.btn-telegram {
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+/* Top Bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: #1c2541;
+}
+
+/* Game Cards */
+.game-card {
+    height: 150px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+}
+.ff { background-image: url('https://w0.peakpx.com/wallpaper/582/103/HD-wallpaper-garena-free-fire-logo-free-fire-thumbnail.jpg'); }
+.game-overlay {
+    background: rgba(0,0,0,0.5);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+}
+
+/* Match Cards */
+.match-card {
+    background: #1c2541;
+    border-radius: 15px;
+    margin-top: 15px;
+}
+.match-info-box { padding: 15px; }
+.timer { color: #ff4757; font-weight: bold; margin-bottom: 5px; }
+.btn-join {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #2ed573;
+    color: white;
+    font-weight: bold;
+    border-radius: 0 0 15px 15px;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #1c2541;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+.nav-item { color: #5bc0be; text-align: center; font-size: 12px; cursor: pointer; }
+.nav-item.active { color: #ff4757; }
+.nav-item i { font-size: 20px; display: block; }
