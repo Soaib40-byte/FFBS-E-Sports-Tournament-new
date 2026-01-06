@@ -3,83 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tournament Pro App</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Ultimate Tournament App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --bg: #050b18;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --accent: #ff4757;
+            --text: #ffffff;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #1a2a6c, #b21f1f, #fdbb2d);
+            background-attachment: fixed;
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            margin: 0;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        .container { padding: 20px; max-width: 500px; margin: auto; }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+        }
+
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .telegram-btn {
+            background: #0088cc;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .match-card {
+            position: relative;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .match-banner {
+            height: 120px;
+            background: url('https://img.freepik.com/premium-photo/fire-background-gaming-banner_1029473-195973.jpg') center/cover;
+            display: flex;
+            align-items: flex-end;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .match-info { padding: 15px; }
+        .match-details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9em; opacity: 0.8; }
+
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 0 0 15px 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-join { background: linear-gradient(to right, #00d2ff, #3a7bd5); color: white; }
+        .btn-joined { background: #4b4b4b; color: #aaa; cursor: not-allowed; }
+
+        .navbar {
+            position: fixed; bottom: 15px; left: 15px; right: 15px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            display: flex; justify-content: space-around;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item { color: #888; font-size: 1.2em; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { color: var(--primary); transform: translateY(-5px); }
+
+        .hidden { display: none !important; }
+
+        /* Custom Modal Styles */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 2000;
+        }
+        .modal-input {
+            width: 100%; padding: 12px; margin: 15px 0;
+            border-radius: 10px; border: 1px solid #00d2ff;
+            background: rgba(255,255,255,0.1); color: white; outline: none;
+            box-sizing: border-box;
+        }
+
+        .timer-red { color: #ff4757; font-weight: bold; }
+        .wallet-balance { font-size: 2em; font-weight: bold; color: #2ed573; margin: 10px 0; }
+    </style>
 </head>
 <body>
 
-    <div id="login-screen" class="container">
-        <div class="glass-card login-box">
-            <i class="fab fa-telegram-plane"></i>
-            <h1>Tournament App</h1>
-            <p>লগিন করতে নিচের বাটনে ক্লিক করুন</p>
-            <button class="btn-telegram" onclick="login()">
-                <i class="fab fa-telegram"></i> Login with Telegram
-            </button>
+<div id="login-screen" class="container">
+    <div class="glass-card">
+        <i class="fab fa-telegram-plane" style="font-size: 4em; color: #0088cc;"></i>
+        <h1>Welcome Back</h1>
+        <p>Login with Telegram to access matches</p>
+        <button class="telegram-btn" onclick="login()">
+            <i class="fab fa-telegram"></i> Login with Telegram
+        </button>
+    </div>
+</div>
+
+<div id="app-ui" class="hidden">
+    
+    <div id="home-sec" class="container">
+        <h2 style="display:flex; justify-content: space-between; align-items: center;">
+            Explore Games <span id="top-balance" style="font-size: 0.6em; background: #2ed573; padding: 5px 12px; border-radius: 20px;">৳ 0</span>
+        </h2>
+        <div class="match-card glass-card" onclick="showFFSection()" style="cursor: pointer;">
+            <div class="match-banner">FREE FIRE MAX</div>
+            <div class="match-info">1 Matches Available</div>
+        </div>
+        <div class="match-card glass-card" style="opacity: 0.6;">
+            <div class="match-banner" style="filter: grayscale(1);">BLOOD STRIKE</div>
+            <div class="match-info">Coming Soon...</div>
         </div>
     </div>
 
-    <div id="app-ui" class="hidden">
-        
-        <header class="top-bar">
-            <span id="u-name-top">Player</span>
-            <div class="balance-badge">৳ <span id="top-balance">10</span></div>
-        </header>
-
-        <section id="home-sec" class="container sec">
-            <div class="game-card ff" onclick="showFFSection()">
-                <div class="game-overlay">
-                    <h2>FREE FIRE MAX</h2>
-                    <p>১০টি ম্যাচ লাইভ আছে</p>
+    <div id="ff-sec" class="container hidden">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom: 20px;">
+            <i class="fas fa-chevron-left" onclick="showHome()"></i>
+            <h3>BR - Solo Matches</h3>
+        </div>
+        <div class="match-card">
+            <div class="match-body glass-card">
+                <div id="timer" class="timer-red">Calculating...</div>
+                <h3 style="margin: 10px 0;">BR SOLO - CLASSIC</h3>
+                <div class="match-details">
+                    <span><i class="fas fa-coins"></i> Entry: 1 BDT</span>
+                    <span><i class="fas fa-trophy"></i> Prize: 40 BDT</span>
+                    <span><i class="fas fa-map-marker-alt"></i> Bermuda</span>
+                    <span><i class="fas fa-user-friends"></i> 48 Players</span>
                 </div>
             </div>
-            <div class="game-card bs disabled">
-                <div class="game-overlay">
-                    <h2>BLOOD STRIKE</h2>
-                    <p>Coming Soon</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="ff-sec" class="container sec hidden">
-            <div class="section-header">
-                <i class="fas fa-arrow-left" onclick="showHome()"></i>
-                <h3>BR Solo Matches</h3>
-            </div>
-
-            <div class="match-card">
-                <div class="match-info-box" onclick="showRules()">
-                    <div id="timer" class="timer">00:00:00</div>
-                    <h4>BR SOLO - CLASSIC MAP</h4>
-                    <div class="match-grid">
-                        <span><i class="fas fa-money-bill-wave"></i> এন্ট্রি: ১৳</span>
-                        <span><i class="fas fa-trophy"></i> প্রাইজ: ৪০৳</span>
-                    </div>
-                </div>
-                <button id="join-btn" class="btn-join" onclick="handleJoin()">Join Match</button>
-            </div>
-        </section>
-
-        <section id="profile-sec" class="container sec hidden">
-            <div class="profile-card glass-card">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Avatar">
-                <h2 id="full-name">User Name</h2>
-                <p id="tg-username">@telegram_user</p>
-            </div>
-            <div class="stats-container">
-                <div class="stat-item"><span>ম্যাচ খেলেছে</span><b id="m-played">0</b></div>
-                <div class="stat-item"><span>মোট জয়</span><b>৳ 0</b></div>
-            </div>
-        </section>
-
-        <nav class="bottom-nav">
-            <div class="nav-item active" id="n-home" onclick="showHome()"><i class="fas fa-home"></i><span>Home</span></div>
-            <div class="nav-item" id="n-wallet" onclick="showWallet()"><i class="fas fa-wallet"></i><span>Wallet</span></div>
-            <div class="nav-item" id="n-profile" onclick="showProfile()"><i class="fas fa-user"></i><span>Profile</span></div>
-        </nav>
+            <button id="join-btn" class="btn-action btn-join" onclick="handleJoin()">Join Match</button>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <div id="profile-sec" class="container hidden">
+        <div class="glass-card" style="text-align:center;">
+            <img src="https://ui-avatars.com/api/?name=User&background=00d2ff&color=fff" style="width:80px; border-radius:50%; border:3px solid var(--primary);">
+            <h2 id="u-name">Player One</h2>
+            <p>@telegram_user</p>
+        </div>
+        <div style="display: flex; gap: 15px;">
+            <div class="glass-card" style="flex:1; text-align:center;">
+                <p style="margin:0; font-size:0.9em; opacity:0.8;">Matches</p>
+                <h3 id="matches-count" style="margin:5px 0 0 0;">0</h3>
+            </div>
+            <div class="glass-card" style="flex:1; text-align:center;">
+                <p style="margin:0; font-size:0.9em; opacity:0.8;">Earnings</p>
+                <h3 style="margin:5px 0 0 0;">৳ 0</h3>
+            </div>
+        </div>
+    </div>
+
+    <div id="wallet-sec" class="container hidden">
+        <div class="glass-card" style="text-align:center;">
+            <h3>My Wallet</h3>
+            <div class="wallet-balance">৳ <span id="current-balance">0</span></div>
+            <div style="display:flex; gap:10px;">
+                <button class="telegram-btn" style="flex:1; background:#2196f3;" onclick="showAddMoney()"><i class="fas fa-plus"></i> Add Money</button>
+                <button class="telegram-btn" style="flex:1; background:#4caf50;" onclick="handleWithdraw()"><i class="fas fa-university"></i> Withdraw</button>
+            </div>
+        </div>
+        
+        <div id="add-money-list" class="hidden">
+            <h4>Select Method</h4>
+            <div class="glass-card" onclick="payVia('Bkash')" style="display:flex; justify-content: space-between; align-items: center; cursor:pointer;">
+                <span>Bkash Payment</span>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="glass-card" style="opacity: 0.5;">Nagad (Coming Soon)</div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-item active" id="n-home" onclick="showHome()"><i class="fas fa-home"></i></div>
+        <div id="n-wallet" class="nav-item" onclick="showWallet()"><i class="fas fa-wallet"></i></div>
+        <div id="n-profile" class="nav-item" onclick="showProfile()"><i class="fas fa-user"></i></div>
+    </nav>
+</div>
+
+<div id="custom-modal" class="modal-overlay hidden">
+    <div class="glass-card" style="width: 90%; max-width: 350px; text-align: center;">
+        <h3 id="modal-title">Title</h3>
+        <p id="modal-desc" style="font-size: 0.9em; opacity: 0.8;"></p>
+        <input type="text" id="modal-input" class="modal-input">
+        <div style="display: flex; gap: 10px;">
+            <button onclick="closeModal()" style="flex:1; padding:12px; border-radius:10px; border:none; background:#ff4757; color:white;">Cancel</button>
+            <button id="modal-confirm" style="flex:1; padding:12px; border-radius:10px; border:none; background:#2ed573; color:white;">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let balance = 0;
+    let joined = false;
+    let mCount = 0;
+
+    function login() {
+        localStorage.setItem('loggedIn', 'true');
+        checkAuth();
+    }
+
+    function checkAuth() {
+        if(localStorage.getItem('loggedIn')) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('app-ui').classList.remove('hidden');
+            startTimer();
+            updateUI();
+        }
+    }
+
+    function openModal(title, desc, placeholder, callback) {
+        const modal = document.getElementById('custom-modal');
+        document.getElementById('modal-title').innerText = title;
+        document.getElementById('modal-desc').innerText = desc;
+        const input = document.getElementById('modal-input');
+        input.placeholder = placeholder;
+        input.value = "";
+        modal.classList.remove('hidden');
+
+        document.getElementById('modal-confirm').onclick = () => {
+            let val = input.value;
+            if(val.trim() !== "") {
+                callback(val);
+                closeModal();
+            }
+        };
+    }
+
+    function closeModal() { document.getElementById('custom-modal').classList.add('hidden'); }
+
+    function showHome() { hideAll(); document.getElementById('home-sec').classList.remove('hidden'); setActiveNav('n-home'); }
+    function showFFSection() { hideAll(); document.getElementById('ff-sec').classList.remove('hidden'); }
+    function showProfile() { hideAll(); document.getElementById('profile-sec').classList.remove('hidden'); setActiveNav('n-profile'); }
+    function showWallet() { hideAll(); document.getElementById('wallet-sec').classList.remove('hidden'); setActiveNav('n-wallet'); }
+    function hideAll() {
+        ['home-sec', 'ff-sec', 'profile-sec', 'wallet-sec'].forEach(s => document.getElementById(s).classList.add('hidden'));
+        document.getElementById('add-money-list').classList.add('hidden');
+    }
+    function setActiveNav(id) {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function showAddMoney() { document.getElementById('add-money-list').classList.remove('hidden'); }
+
+    function payVia(method) {
+        openModal(`${method} Payment`, `${method} এ টাকা পাঠিয়ে Transaction ID নিচে দিন:`, "Transaction ID লিখুন", (tid) => {
+                alert("ধন্যবাদ! ভেরিফিকেশনের পর ব্যালেন্স যোগ হবে।");
+            }
+        );
+    }
+
+    function handleWithdraw() {
+        if(balance < 50) {
+            alert("আপনার ব্যালেন্স ৫০ টাকার কম। উইথড্র করা সম্ভব নয়।");
+            return;
+        }
+        openModal("Withdraw Money", "বিকাশ নম্বর এবং টাকার পরিমাণ লিখুন:", "017XXXXXXXX, 100TK", (info) => {
+                alert("আপনার উইথড্র রিকোয়েস্ট সফল হয়েছে!");
+            }
+        );
+    }
+
+    function handleJoin() {
+        if(joined) return;
+        openModal("Join Match", "আপনার Free Fire ID নাম দিন:", "PlayerName", (ign) => {
+            if(balance < 1) {
+                alert("পর্যাপ্ত ব্যালেন্স নেই! দয়া করে টাকা অ্যাড করুন।");
+                return;
+            }
+            balance -= 1;
+            updateUI();
+            let btn = document.getElementById('join-btn');
+            btn.innerText = "Requesting...";
+            btn.disabled = true;
+            setTimeout(() => {
+                joined = true; mCount++;
+                btn.innerText = "Joined ✅";
+                btn.className = "btn-action btn-joined";
+                updateUI();
+            }, 3000);
+        });
+    }
+
+    function updateUI() {
+        document.getElementById('current-balance').innerText = balance;
+        document.getElementById('top-balance').innerText = "৳ " + balance;
+        document.getElementById('matches-count').innerText = mCount;
+    }
+
+    function startTimer() {
+        let time = 7200; 
+        setInterval(() => {
+            let h = Math.floor(time / 3600);
+            let m = Math.floor((time % 3600) / 60);
+            let s = time % 60;
+            document.getElementById('timer').innerText = `Starts In: ${h}h ${m}m ${s}s`;
+            if(time > 0) time--;
+        }, 1000);
+    }
+
+    window.onload = checkAuth;
+</script>
 </body>
 </html>
